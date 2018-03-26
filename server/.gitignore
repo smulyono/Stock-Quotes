@@ -1,3 +1,6 @@
+## PROJECTS ###
+src/main/resources/application-secret.yaml
+
 .gradle
 /build/
 !gradle/wrapper/gradle-wrapper.jar
@@ -64,27 +67,8 @@ gradle-app.setting
 cmake-build-debug/
 cmake-build-release/
 
-# Mongo Explorer plugin:
-.idea/**/mongoSettings.xml
-
-## File-based project format:
-
 ## Plugin-specific files:
 
 # IntelliJ
 out/
 
-# mpeltonen/sbt-idea plugin
-.idea_modules/
-
-# JIRA plugin
-atlassian-ide-plugin.xml
-
-# Cursive Clojure plugin
-.idea/replstate.xml
-
-# Crashlytics plugin (for Android Studio and IntelliJ)
-com_crashlytics_export_strings.xml
-crashlytics.properties
-crashlytics-build.properties
-fabric.properties
