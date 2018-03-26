@@ -1,7 +1,10 @@
 package com.github.smulyono.stockquotes.service;
 
+import com.github.smulyono.stockquotes.integration.VantageClient;
+import com.github.smulyono.stockquotes.integration.VantageOutput;
 import com.github.smulyono.stockquotes.model.Quote;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
@@ -22,6 +25,9 @@ public class QuoteGenerator {
     private final Random random = new Random();
 
     private final List<Quote> prices = new ArrayList<>();
+
+    @Autowired
+    private VantageClient client;
 
     /**
      * Bootstraps the generator with tickers and initial prices
@@ -45,24 +51,33 @@ public class QuoteGenerator {
                 .onBackpressureDrop()
                 // For each tick, generate a list of quotes
                 .map(this::generateQuotes)
+                .flatMap(quoteFlux -> quoteFlux)
                 // "flatten" that List<Quote> into a Flux<Quote>
-                .flatMapIterable(quotes -> quotes)
+//                .flatMapIterable(quotes -> quotes)
                 .log(this.getClass().getName());
     }
 
     /*
      * Create quotes for all tickers at a single instant.
      */
-    private List<Quote> generateQuotes(long interval) {
-        final Instant instant = Instant.now();
-        return prices.stream()
-                .map(baseQuote -> {
-                    BigDecimal priceChange = baseQuote.getPrice()
-                            .multiply(new BigDecimal(0.05 * this.random.nextDouble()), this.mathContext);
-                    Quote result = new Quote(baseQuote.getTicker(), baseQuote.getPrice().add(priceChange));
-                    result.setInstant(instant);
-                    return result;
-                })
-                .collect(Collectors.toList());
+    private Flux<Quote> generateQuotes(long interval) {
+        String[] ticker = prices.stream()
+                .map(i -> i.getTicker())
+                .collect(Collectors.toList())
+                .toArray(new String[prices.size()]);
+
+        log.info("Generating quotes for {}", String.join(",", ticker));
+        return this.client.getQuotes(ticker)
+                .flatMapIterable(
+                        (VantageOutput response) -> response.getQuotes()
+                                .stream()
+                                .map(quote -> {
+                                    Quote result = new Quote(quote.getSymbol(),
+                                            BigDecimal.valueOf(Double.valueOf(quote.getPrice())));
+                                    result.setInstant(quote.getTimestamp());
+                                    return result;
+                                })
+                                .collect(Collectors.toList())
+                );
     }
 }

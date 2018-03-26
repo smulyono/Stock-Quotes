@@ -19,7 +19,7 @@ public class QuoteHandler {
 
     public QuoteHandler(QuoteGenerator quoteGenerator) {
         quoteStream = quoteGenerator
-                        .fetchQuoteStream(Duration.ofMillis(200))
+                        .fetchQuoteStream(Duration.ofSeconds(3))
                         .share();
     }
 
