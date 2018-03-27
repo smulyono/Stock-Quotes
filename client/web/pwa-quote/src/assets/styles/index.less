@@ -1,0 +1,47 @@
+@import './icon';
+
+* {margin:0;padding:0;box-sizing: border-box;}
+
+body {
+    background-color : black;
+    color : #ddd;
+}
+
+
+.header-nav {
+    position:static;
+    top : 0;
+    left:0;
+    right:0;
+    height : 40px;
+    background-color : darkgoldenrod;
+
+    display : flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: flex-start;
+
+    &--item {
+        width : 20px;
+        height: 20px;
+        margin-right:10px;
+        color : white;
+    }
+}
+
+.cardlists-container {
+    padding : 15px;
+    display : flex;
+    justify-content:  center;
+    align-items: center;
+    flex-wrap: wrap;
+
+    .card-item {
+        min-width : 300px;
+        min-height : 150px;
+        border-radius : 15px;
+        background-color : whitesmoke;
+        border-color: tan;
+        margin : 10px;
+    }
+}

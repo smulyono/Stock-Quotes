@@ -1,14 +1,17 @@
 {
   "name": "pwa-quote",
   "version": "0.0.1",
-  "scripts" : {
-    "start" : "webpack-boot start",
-    "build" : "webpack-boot build"
+  "scripts": {
+    "start": "webpack-boot start",
+    "build": "webpack-boot build"
   },
-  "dependencies": {
-
-  },
-  "devDependencies" : {
+  "dependencies": {},
+  "devDependencies": {
+    "babel-preset-stage-0": "^6.24.1",
+    "less": "^3.0.1",
+    "less-loader": "^4.1.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
     "webpack-boot": "~0.0.16"
   }
 }
