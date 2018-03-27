@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  server:
+    image: smulyono/quoteserver:latest
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: quoteserver
+    hostname: quoteserver
+    ports: 
+      - "8081:8081"
+    environment: 
+      - STOCK_APIKEY=AC64YZ5RVTHDXP05
+    
