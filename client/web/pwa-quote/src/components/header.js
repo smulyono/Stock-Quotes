@@ -1,14 +1,30 @@
 import React from 'react';
+import {
+    Navbar,
+    NavbarGroup,
+    NavbarHeading,
+    Alignment,
+    NavbarDivider,
+    ButtonGroup,
+    Button
+} from '@blueprintjs/core';
+
+import { IconNames } from '@blueprintjs/icons';
+
 
 const Header = () => (
-    <div className="header-nav">
-        <div className="header-nav--item">
-            <span className="refresh icon" />
-        </div>
-        <div className="header-nav--item">
-            <span className="mail icon" />
-        </div>
-    </div>
+    <Navbar className="pt-dark">
+        <NavbarGroup align={Alignment.RIGHT}>
+            <NavbarHeading title="Stock Quote">
+                Stock Quote
+            </NavbarHeading>
+            <NavbarDivider />
+            <ButtonGroup minimal={true}>
+                <Button icon={IconNames.REFRESH}></Button>
+                <Button icon={IconNames.PULSE}></Button>
+            </ButtonGroup>
+        </NavbarGroup>
+    </Navbar>
 )
 
 

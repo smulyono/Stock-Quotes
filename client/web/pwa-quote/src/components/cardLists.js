@@ -6,8 +6,6 @@ class CardLists extends React.Component {
         return (
             <div className='cardlists-container'>
                 <Card />
-                <Card />
-                <Card />
             </div>
         )
     }

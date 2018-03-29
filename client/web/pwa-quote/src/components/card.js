@@ -4,10 +4,6 @@ class Card extends React.Component {
     state = {
         loading : true,
     }
-    constructor(props) {
-        super(props);
-
-    }
     render() {
         const {loading} = this.state;
         return(

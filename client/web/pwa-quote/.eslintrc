@@ -1,23 +1,6 @@
 {
     "extends": [
+        "react-app",
         "plugin:react/recommended"
-    ],
-    "parser": "babel-eslint",
-    "env": {
-        "browser": true,
-        "es6": true
-    },
-    "parserOptions": {
-        "ecmaVersion": 8,
-        "sourceType": "module",
-        "ecmaFeatures": {
-            "jsx": true
-        }
-    },
-    "rules": {
-        "no-console" : 0
-    },
-    "globals": {
-        "require" : true
-    }
+    ]
 }
