@@ -13,4 +13,9 @@ Dom.render(
         <CardLists />
     </React.Fragment>,
     document.getElementById("root")
-)
+);
+
+// hot module reload
+if (module.hot) {
+    module.hot.accept();
+}

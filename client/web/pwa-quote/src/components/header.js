@@ -21,7 +21,6 @@ const Header = () => (
             <NavbarDivider />
             <ButtonGroup minimal={true}>
                 <Button icon={IconNames.REFRESH}></Button>
-                <Button icon={IconNames.PULSE}></Button>
             </ButtonGroup>
         </NavbarGroup>
     </Navbar>
