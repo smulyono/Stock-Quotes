@@ -1,16 +1,24 @@
 import React from 'react';
 import Card from './card';
 
+import { Consumer } from '../context/stockContext';
+
 class CardLists extends React.Component {
     render() {
         return (
-            <div className='pt-dark cardlists-container'>
-                <Card />
-                <Card price={10002} volume={10} />
-                <Card symbol="GOGL" />
-                <Card symbol="APPL" />
-                <Card symbol="JNPR" />
-            </div>
+            <Consumer>
+                {({ store, dispatch }) => (
+                    <div className='pt-dark cardlists-container'>
+                        {store.getState().map((i) => (
+                            <Card
+                                key={i.name}
+                                symbol={i.name}
+                                needUpdate={i.manualUpdate}
+                            />
+                        ))}
+                    </div>
+                )}
+            </Consumer>
         )
     }
 }

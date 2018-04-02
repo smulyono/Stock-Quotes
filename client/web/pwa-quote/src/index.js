@@ -3,15 +3,17 @@ import Dom from 'react-dom';
 import Header from './components/header';
 import CardLists from './components/cardLists';
 
+import { AppProvider } from './context/stockContext';
+
 /* importing styles from `./assets/styles/index.css */
 import "./assets/styles/index.less";
 
 // /* Start of javascript */
 Dom.render(
-    <React.Fragment>
+    <AppProvider>
         <Header />
         <CardLists />
-    </React.Fragment>,
+    </AppProvider>,
     document.getElementById("root")
 );
 
