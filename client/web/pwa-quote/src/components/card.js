@@ -1,45 +1,72 @@
 import React from "react";
 import PropTypes from "prop-types";
+
 import { Consumer } from "../context/stockContext";
 import ActionEnum from "../reducers/action";
+import stockFetchUtil from "../utils/stockFetch";
+
 import { Card, Icon, Intent } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 
 class StockCard extends React.Component {
   static defaultProps = {
     symbol: "GOOGL",
+    price: 1000,
+    volume: 123040,
+    timestamp: new Date().toLocaleString(),
     needUpdate: new Date()
   };
 
   static propTypes = {
     symbol: PropTypes.string.isRequired,
-    needUpdate: PropTypes.any
+    price: PropTypes.any,
+    volume: PropTypes.number,
+    timestamp: PropTypes.string,
+    needUpdate: PropTypes.any,
+    dispatch: PropTypes.func
   };
 
   state = {
     loading: true,
-    price: 1000,
-    volume: 123040,
-    timestamp: new Date().toLocaleString(),
     lastAskedUpdate: new Date()
   };
+
+  constructor(props) {
+    super(props);
+    // Transferring props to state
+    this.state = {
+      loading: true,
+      ...this.props
+    };
+  }
 
   componentDidMount() {
     this.updateData();
   }
 
   componentWillReceiveProps(props) {
-    if (props.needUpdate !== this.state.lastAskedUpdate) {
-      this.setState({
-        loading: true
-      });
-      this.updateData();
-    }
+    // receive update of props and must be passed to state
+    this.setState({
+      ...props
+    });
   }
 
+  /**
+   * Updating data for stock symbol
+   */
   updateData() {
     setTimeout(() => {
+      // get individual stock
+      const data = stockFetchUtil.fetchStock(this.props.symbol);
+      // update stock info in context
+      this.props.dispatch({
+        type: ActionEnum.UPDATE_STOCK,
+        symbol: this.props.symbol,
+        ...data
+      });
+      // update drawing
       this.setState({
+        ...data,
         loading: false,
         lastAskedUpdate: this.props.needUpdate
       });
@@ -47,9 +74,8 @@ class StockCard extends React.Component {
   }
 
   render() {
-    const { loading, price, volume, timestamp } = this.state;
+    const { loading, symbol, price, volume, timestamp } = this.state;
 
-    const { symbol } = this.props;
     return (
       <Consumer>
         {({ store, dispatch }) => (
@@ -60,7 +86,7 @@ class StockCard extends React.Component {
               onClick={() =>
                 dispatch({
                   type: ActionEnum.DELETE_STOCK,
-                  name: this.props.symbol
+                  symbol: this.props.symbol
                 })
               }
             />

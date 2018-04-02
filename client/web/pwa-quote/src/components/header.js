@@ -1,6 +1,8 @@
 import React from "react";
+
 import { Consumer } from "../context/stockContext";
 import ActionEnum from "../reducers/action";
+import StockFetchUtil from "../utils/stockFetch";
 
 import AddDialog from "./addDialog";
 import {
@@ -26,6 +28,15 @@ class Header extends React.Component {
     });
   }
 
+  refreshAllData = async (store, dispatch) => {
+    const newdata = await StockFetchUtil.fetchAllStocks(store.getState());
+    console.log("refresh ", newdata);
+    dispatch({
+      type: ActionEnum.REFRESH_STOCK,
+      newdata
+    });
+  };
+
   render() {
     return (
       <Consumer>
@@ -38,9 +49,7 @@ class Header extends React.Component {
                 <Button
                   icon={IconNames.REFRESH}
                   onClick={e => {
-                    dispatch({
-                      type: ActionEnum.REFRESH_STOCK
-                    });
+                    this.refreshAllData(store, dispatch);
                   }}
                 />
                 <Button

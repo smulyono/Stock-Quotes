@@ -7,17 +7,33 @@ const stock = (state = [], action) => {
         return [
           ...state,
           {
-            name: action.name ? action.name.toUpperCase() : "-",
+            symbol: action.name ? action.name.toUpperCase() : "-",
+            price: 0,
+            volume: 0,
+            timestamp: "-",
             manualUpdate: false
           }
         ];
       case ACTION_ENUM.DELETE_STOCK:
-        return state.filter(i => i.name !== action.name);
+        return state.filter(i => i.symbol !== action.symbol);
       case ACTION_ENUM.REFRESH_STOCK:
+        // will receive the updated stock information from endpoint with
+        // action.newdata
+        if (action.newdata) {
+          return action.newdata;
+        } else {
+          return state;
+        }
+      case ACTION_ENUM.UPDATE_STOCK:
         return state.map(i => {
-          i.manualUpdate = new Date();
+          if (i.symbol == action.symbol) {
+            i.price = action.price;
+            i.volume = action.volume;
+            i.timestamp = action.timestamp;
+          }
           return i;
         });
+
       default:
         return state;
     }

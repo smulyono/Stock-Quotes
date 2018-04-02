@@ -13,9 +13,13 @@ class CardLists extends React.Component {
               .getState()
               .map(i => (
                 <Card
-                  key={i.name}
-                  symbol={i.name}
+                  key={i.symbol}
+                  symbol={i.symbol}
+                  price={i.price}
+                  volume={i.volume}
+                  timestamp={i.timestamp}
                   needUpdate={i.manualUpdate}
+                  dispatch={dispatch}
                 />
               ))}
           </div>
