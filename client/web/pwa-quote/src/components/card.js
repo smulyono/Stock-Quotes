@@ -62,7 +62,6 @@ class StockCard extends React.Component {
 
         const {
             symbol,
-            needUpdate,
         } = this.props;
         return (
             <Consumer>

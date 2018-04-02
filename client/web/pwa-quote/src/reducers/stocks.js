@@ -12,9 +12,7 @@ const stock = (state = [], action) => {
                     }
                 ]
             case ACTION_ENUM.DELETE_STOCK:
-                return state.filter(i => {
-                    if (i.name !== action.name) { return i; }
-                });
+                return state.filter(i => i.name !== action.name);
             case ACTION_ENUM.REFRESH_STOCK:
                 return state.map(i => {
                     i.manualUpdate = new Date();
