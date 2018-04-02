@@ -31,7 +31,6 @@ export class AppProvider extends React.Component {
   }
   componentDidMount() {
     this.unsubsribe = AppStore.subscribe(() => {
-      console.log("changes", AppStore.getState());
       this.setState({
         stocks: AppStore.getState()
       });

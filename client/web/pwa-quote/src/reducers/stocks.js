@@ -10,8 +10,7 @@ const stock = (state = [], action) => {
             symbol: action.name ? action.name.toUpperCase() : "-",
             price: 0,
             volume: 0,
-            timestamp: "-",
-            manualUpdate: false
+            timestamp: "-"
           }
         ];
       case ACTION_ENUM.DELETE_STOCK:

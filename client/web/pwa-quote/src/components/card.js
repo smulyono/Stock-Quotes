@@ -13,8 +13,7 @@ class StockCard extends React.Component {
     symbol: "GOOGL",
     price: 1000,
     volume: 123040,
-    timestamp: new Date().toLocaleString(),
-    needUpdate: new Date()
+    timestamp: new Date().toLocaleString()
   };
 
   static propTypes = {
@@ -22,13 +21,11 @@ class StockCard extends React.Component {
     price: PropTypes.any,
     volume: PropTypes.number,
     timestamp: PropTypes.string,
-    needUpdate: PropTypes.any,
     dispatch: PropTypes.func
   };
 
   state = {
-    loading: true,
-    lastAskedUpdate: new Date()
+    loading: true
   };
 
   constructor(props) {
@@ -47,7 +44,8 @@ class StockCard extends React.Component {
   componentWillReceiveProps(props) {
     // receive update of props and must be passed to state
     this.setState({
-      ...props
+      ...props,
+      loading: false
     });
   }
 
@@ -67,8 +65,7 @@ class StockCard extends React.Component {
       // update drawing
       this.setState({
         ...data,
-        loading: false,
-        lastAskedUpdate: this.props.needUpdate
+        loading: false
       });
     }, 1000);
   }
