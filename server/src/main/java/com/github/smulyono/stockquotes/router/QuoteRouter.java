@@ -19,26 +19,15 @@ public class QuoteRouter {
     RouterFunction<ServerResponse> route(QuoteHandler handler) {
         return RouterFunctions
                 .route(
-                        GET("/hello")
-                        .and(accept(MediaType.TEXT_PLAIN)),
-                        handler::hello
-                )
-                .andRoute(
-                        POST("/echo")
-                        .and(accept(MediaType.TEXT_PLAIN)),
-                        handler::echo
-                )
-                .andRoute(
                         GET("/quotes")
                         .and(accept(MediaType.APPLICATION_STREAM_JSON)),
                         handler::stream
                 )
                 .andRoute(
-                        GET("/quotess")
+                        GET("/instantquotes")
                         .and(accept(MediaType.APPLICATION_JSON)),
-                        handler::streamWithSize
+                        handler::instant
                 )
-
                 ;
     }
 }

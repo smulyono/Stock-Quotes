@@ -2,9 +2,9 @@ package com.github.smulyono.stockquotes.handler;
 
 import com.github.smulyono.stockquotes.model.Quote;
 import com.github.smulyono.stockquotes.service.QuoteGenerator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Flux;
@@ -15,34 +15,26 @@ import java.time.Duration;
 @Component
 public class QuoteHandler {
 
-    private final Flux<Quote> quoteStream;
-
-    public QuoteHandler(QuoteGenerator quoteGenerator) {
-        quoteStream = quoteGenerator
-                        .fetchQuoteStream(Duration.ofSeconds(3))
-                        .share();
-    }
-
-    public Mono<ServerResponse> hello(ServerRequest request) {
-        return ServerResponse.ok()
-                .body(BodyInserters.fromObject("Hello Spring"));
-    }
-
-    public Mono<ServerResponse> echo(ServerRequest request) {
-        return ServerResponse.ok()
-                .body(request.bodyToMono(String.class), String.class);
-    }
+    @Autowired
+    private QuoteGenerator quoteGenerator;
 
     public Mono<ServerResponse> stream(ServerRequest request) {
+        String stocks = request.queryParam("stocks")
+                .orElse("");
+
         return ServerResponse.ok()
                     .contentType(MediaType.APPLICATION_STREAM_JSON)
-                .body(this.quoteStream, Quote.class);
+                .body(quoteGenerator
+                        .fetchQuoteStream(Duration.ofSeconds(3), stocks.split(",")), Quote.class);
     }
 
-    public Mono<ServerResponse> streamWithSize(ServerRequest request) {
-        int size = Integer.parseInt(request.queryParam("size").orElse("10"));
+    public Mono<ServerResponse> instant(ServerRequest request) {
+        String stocks = request.queryParam("stocks")
+                .orElse("");
+
         return ServerResponse.ok()
-                .contentType(MediaType.APPLICATION_STREAM_JSON)
-                .body(this.quoteStream.take(size), Quote.class);
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(quoteGenerator
+                        .getInstantQuote(stocks.split(",")), Quote.class);
     }
 }

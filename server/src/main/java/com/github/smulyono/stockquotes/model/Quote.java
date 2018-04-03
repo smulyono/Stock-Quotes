@@ -14,18 +14,15 @@ import java.time.Instant;
 public class Quote {
     private static final MathContext MATH_CONTEXT = new MathContext(2);
 
-    private String ticker;
+    private String symbol;
 
     private BigDecimal price;
 
-    private String instant;
+    private Long volume;
 
-    public Quote(String ticker, BigDecimal price) {
-        this.ticker = ticker;
-        this.price = price;
-    }
+    private String timestamp;
 
-    public Quote(String ticker, Double price) {
-        this(ticker, new BigDecimal(price, MATH_CONTEXT));
+    public void setPriceAsDouble(Double price) {
+        this.setPrice(new BigDecimal(price, MATH_CONTEXT));
     }
 }

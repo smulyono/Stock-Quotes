@@ -22,10 +22,6 @@ import java.util.stream.Collectors;
 public class QuoteGenerator {
     private final MathContext mathContext = new MathContext(2);
 
-    private final Random random = new Random();
-
-    private final List<Quote> prices = new ArrayList<>();
-
     @Autowired
     private VantageClient client;
 
@@ -33,16 +29,9 @@ public class QuoteGenerator {
      * Bootstraps the generator with tickers and initial prices
      */
     public QuoteGenerator() {
-        this.prices.add(new Quote("CTXS", 82.26));
-        this.prices.add(new Quote("DELL", 63.74));
-        this.prices.add(new Quote("GOOG", 847.24));
-        this.prices.add(new Quote("MSFT", 65.11));
-        this.prices.add(new Quote("ORCL", 45.71));
-        this.prices.add(new Quote("RHT", 84.29));
-        this.prices.add(new Quote("VMW", 92.21));
     }
 
-    public Flux<Quote> fetchQuoteStream(Duration period) {
+    public Flux<Quote> fetchQuoteStream(Duration period, String[] ticker) {
 
         // We want to emit quotes with a specific period;
         // to do so, we create a Flux.interval
@@ -50,34 +39,52 @@ public class QuoteGenerator {
                 // In case of back-pressure, drop events
                 .onBackpressureDrop()
                 // For each tick, generate a list of quotes
-                .map(this::generateQuotes)
+                .map((Long interval) -> generateQuotes(interval, ticker))
+                .defaultIfEmpty(Flux.empty())
                 .flatMap(quoteFlux -> quoteFlux)
-                // "flatten" that List<Quote> into a Flux<Quote>
-//                .flatMapIterable(quotes -> quotes)
+                .share()
                 .log(this.getClass().getName());
+    }
+
+    public Flux<Quote> getInstantQuote(String[] ticker) {
+
+        return this.client.getQuotes(ticker)
+                .flatMapIterable(
+                        (VantageOutput response) ->
+                                response.getQuotes()
+                                        .stream()
+                                        .map(quote -> {
+                                            Quote result = new Quote();
+                                            result.setSymbol(quote.getSymbol());
+                                            result.setPrice(BigDecimal.valueOf(Double.valueOf(quote.getPrice())));
+                                            result.setVolume(Long.valueOf(quote.getVolume()));
+                                            result.setTimestamp(quote.getTimestamp());
+                                            return result;
+                                        })
+                                        .collect(Collectors.toList())
+                );
     }
 
     /*
      * Create quotes for all tickers at a single instant.
      */
-    private Flux<Quote> generateQuotes(long interval) {
-        String[] ticker = prices.stream()
-                .map(i -> i.getTicker())
-                .collect(Collectors.toList())
-                .toArray(new String[prices.size()]);
-
+    private Flux<Quote> generateQuotes(long interval, String[] ticker) {
+        if (String.join(",", ticker).length() == 0) { return Flux.empty(); }
         log.info("Generating quotes for {}", String.join(",", ticker));
         return this.client.getQuotes(ticker)
                 .flatMapIterable(
-                        (VantageOutput response) -> response.getQuotes()
-                                .stream()
-                                .map(quote -> {
-                                    Quote result = new Quote(quote.getSymbol(),
-                                            BigDecimal.valueOf(Double.valueOf(quote.getPrice())));
-                                    result.setInstant(quote.getTimestamp());
-                                    return result;
-                                })
-                                .collect(Collectors.toList())
+                        (VantageOutput response) ->
+                                response.getQuotes()
+                                        .stream()
+                                        .map(quote -> {
+                                            Quote result = new Quote();
+                                            result.setSymbol(quote.getSymbol());
+                                            result.setPrice(BigDecimal.valueOf(Double.valueOf(quote.getPrice())));
+                                            result.setVolume(Long.valueOf(quote.getVolume()));
+                                            result.setTimestamp(quote.getTimestamp());
+                                            return result;
+                                        })
+                                        .collect(Collectors.toList())
                 );
     }
 }
