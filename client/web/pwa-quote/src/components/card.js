@@ -4,8 +4,9 @@ import PropTypes from "prop-types";
 import { Consumer } from "../context/stockContext";
 import ActionEnum from "../reducers/action";
 import stockFetchUtil from "../utils/stockFetch";
+import { TopToaster, BottomToaster } from "./toasterApp";
 
-import { Card, Icon, Intent } from "@blueprintjs/core";
+import { Card, Icon, Intent, Position } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 
 class StockCard extends React.Component {
@@ -52,22 +53,38 @@ class StockCard extends React.Component {
   /**
    * Updating data for stock symbol
    */
-  updateData() {
-    setTimeout(() => {
-      // get individual stock
-      const data = stockFetchUtil.fetchStock(this.props.symbol);
+  async updateData() {
+    // get individual stock
+    const data = await stockFetchUtil.fetchStock(this.props.symbol);
+    if (data) {
       // update stock info in context
       this.props.dispatch({
         type: ActionEnum.UPDATE_STOCK,
         symbol: this.props.symbol,
         ...data
       });
+      BottomToaster.show({
+        className: "pt-intent-success",
+        message: `${this.props.symbol} added !`,
+        icon: IconNames.TICK_CIRCLE
+      });
       // update drawing
       this.setState({
         ...data,
         loading: false
       });
-    }, 1000);
+    } else {
+      TopToaster.show({
+        className: "pt-intent-danger",
+        message: `${this.props.symbol} cannot be found !`,
+        icon: IconNames.ERROR
+      });
+      // delete symbol which cannot be found
+      this.props.dispatch({
+        type: ActionEnum.DELETE_STOCK,
+        symbol: this.props.symbol
+      });
+    }
   }
 
   render() {
@@ -101,13 +118,13 @@ class StockCard extends React.Component {
               </span>
               <span className={`ticker-info--item`}>
                 <Icon
-                  icon={IconNames.CHART}
+                  icon={IconNames.DATABASE}
                   iconSize={16}
                   style={{
                     marginRight: 4
                   }}
                 />
-                {volume}
+                {volume.toLocaleString()}
               </span>
               <span className={`ticker-info--item-wide`}>
                 Last updated : {timestamp}

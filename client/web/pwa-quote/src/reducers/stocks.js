@@ -25,7 +25,7 @@ const stock = (state = [], action) => {
         }
       case ACTION_ENUM.UPDATE_STOCK:
         return state.map(i => {
-          if (i.symbol == action.symbol) {
+          if (i.symbol === action.symbol) {
             i.price = action.price;
             i.volume = action.volume;
             i.timestamp = action.timestamp;

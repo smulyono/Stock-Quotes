@@ -7,7 +7,6 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -19,22 +18,22 @@ public class QuoteHandler {
     private QuoteGenerator quoteGenerator;
 
     public Mono<ServerResponse> stream(ServerRequest request) {
-        String stocks = request.queryParam("stocks")
+        String symbols = request.queryParam("symbols")
                 .orElse("");
 
         return ServerResponse.ok()
-                    .contentType(MediaType.APPLICATION_STREAM_JSON)
+                .contentType(MediaType.TEXT_EVENT_STREAM)
                 .body(quoteGenerator
-                        .fetchQuoteStream(Duration.ofSeconds(3), stocks.split(",")), Quote.class);
+                        .fetchQuoteStream(Duration.ofSeconds(3), symbols.split(",")), Quote.class);
     }
 
     public Mono<ServerResponse> instant(ServerRequest request) {
-        String stocks = request.queryParam("stocks")
+        String symbols = request.queryParam("symbols")
                 .orElse("");
 
         return ServerResponse.ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(quoteGenerator
-                        .getInstantQuote(stocks.split(",")), Quote.class);
+                        .getInstantQuote(symbols.split(",")), Quote.class);
     }
 }

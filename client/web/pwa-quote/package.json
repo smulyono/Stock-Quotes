@@ -1,35 +1,35 @@
 {
-  "name": "pwa-quote",
-  "version": "0.0.1",
-  "scripts": {
-    "start": "webpack-boot start",
-    "build": "webpack-boot build",
-    "cleanup": "prettier --tab-width=2 --write src/**/*.js",
-    "precommit": "pretty-quick --staged"
-  },
-  "dependencies": {
-    "@blueprintjs/core": "^2.0.1",
-    "babel-plugin-transform-async-to-generator": "^6.24.1",
-    "prop-types": "^15.6.1",
-    "react": "^16.3.0",
-    "react-dom": "^16.3.0",
-    "react-transition-group": "^2.2.1",
-    "redux": "^3.7.2"
-  },
-  "devDependencies": {
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-0": "^6.24.1",
-    "eslint": "^4.19.1",
-    "file-loader": "^1.1.11",
-    "less": "^3.0.1",
-    "less-loader": "^4.1.0",
-    "prettier": "^1.11.1",
-    "pretty-quick": "^1.4.1",
-    "url-loader": "^1.0.1",
-    "whatwg-fetch": "^2.0.4"
-  },
-  "prettier": {
-    "tabWidth": 2
-  }
+    "name": "pwa-quote",
+    "version": "0.0.1",
+    "scripts": {
+        "start": "webpack-boot start",
+        "build": "webpack-boot build",
+        "cleanup": "prettier --tab-width=2 --write src/**/*.js",
+        "precommit": "pretty-quick --staged"
+    },
+    "dependencies": {
+        "@blueprintjs/core": "^2.0.1",
+        "babel-plugin-transform-async-to-generator": "^6.24.1",
+        "prop-types": "^15.6.1",
+        "react": "^16.3.0",
+        "react-dom": "^16.3.0",
+        "react-transition-group": "^2.2.1",
+        "redux": "^3.7.2"
+    },
+    "devDependencies": {
+        "babel-preset-env": "^1.6.1",
+        "babel-preset-react": "^6.24.1",
+        "babel-preset-stage-0": "^6.24.1",
+        "eslint": "^4.19.1",
+        "file-loader": "^1.1.11",
+        "less": "^3.0.1",
+        "less-loader": "^4.1.0",
+        "prettier": "^1.11.1",
+        "pretty-quick": "^1.4.1",
+        "url-loader": "^1.0.1",
+        "whatwg-fetch": "^2.0.4"
+    },
+    "prettier": {
+        "tabWidth": 2
+    }
 }

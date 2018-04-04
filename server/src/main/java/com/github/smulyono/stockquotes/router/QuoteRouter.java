@@ -20,7 +20,7 @@ public class QuoteRouter {
         return RouterFunctions
                 .route(
                         GET("/quotes")
-                        .and(accept(MediaType.APPLICATION_STREAM_JSON)),
+                        .and(accept(MediaType.TEXT_EVENT_STREAM)),
                         handler::stream
                 )
                 .andRoute(
