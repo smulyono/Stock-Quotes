@@ -6,18 +6,7 @@ const fetchStock = async symbol => {
   try {
     const response = await fetch(uri, {});
     const data = await response.json();
-    if (data.length < 1) return null;
-    if (data.length == 1) {
-      const stockData = data[0];
-      return {
-        symbol,
-        price: stockData.price,
-        volume: stockData.volume,
-        timestamp: stockData.timestamp
-      };
-    } else {
-      return data;
-    }
+    return data;
   } catch (e) {
     console.error(e);
   }

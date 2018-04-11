@@ -12,7 +12,8 @@ import {
   Alignment,
   NavbarDivider,
   ButtonGroup,
-  Button
+  Button,
+  Switch
 } from "@blueprintjs/core";
 
 import { IconNames } from "@blueprintjs/icons";
@@ -28,9 +29,15 @@ class Header extends React.Component {
     });
   }
 
+  toggleAutoRefresh = (value, store, dispatch) => {
+    dispatch({
+      type: ActionEnum.TOGGLE_AUTOREFRESH
+    });
+  };
+
   refreshAllData = async (store, dispatch) => {
-    const newdata = await StockFetchUtil.fetchAllStocks(store.getState());
-    console.log("refresh ", newdata);
+    const currentState = store.getState();
+    const newdata = await StockFetchUtil.fetchAllStocks(currentState.stocks);
     dispatch({
       type: ActionEnum.REFRESH_STOCK,
       newdata
@@ -41,10 +48,28 @@ class Header extends React.Component {
     return (
       <Consumer>
         {({ store, dispatch }) => (
-          <Navbar className="pt-dark">
+          <Navbar
+            className={
+              store.getState().refreshMode ? "pt-dark refreshOn" : "pt-dark"
+            }
+          >
             <NavbarGroup align={Alignment.RIGHT}>
               <NavbarHeading title="Stock Quote">Stock Quote</NavbarHeading>
               <NavbarDivider />
+              <Switch
+                className="pt-large pt-align-right"
+                checked={store.getState().refreshMode}
+                onChange={e => {
+                  this.toggleAutoRefresh(e.target.value, store, dispatch);
+                }}
+                label="Auto Refresh"
+                style={{
+                  marginTop: 10,
+                  marginRight: 7,
+                  paddingRight: 50,
+                  paddingLeft: 0
+                }}
+              />
               <ButtonGroup minimal={true}>
                 <Button
                   icon={IconNames.REFRESH}

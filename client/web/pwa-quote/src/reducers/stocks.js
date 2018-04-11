@@ -1,6 +1,7 @@
 import ACTION_ENUM from "./action";
+import { combineReducers } from "redux";
 
-const stock = (state = [], action) => {
+const stocks = (state = [], action) => {
   if (action.type) {
     switch (action.type) {
       case ACTION_ENUM.ADD_STOCK:
@@ -19,7 +20,10 @@ const stock = (state = [], action) => {
         // will receive the updated stock information from endpoint with
         // action.newdata
         if (action.newdata) {
-          return action.newdata;
+          return action.newdata.map(i => {
+            i.volume++;
+            return i;
+          });
         } else {
           return state;
         }
@@ -41,4 +45,18 @@ const stock = (state = [], action) => {
   }
 };
 
-export default stock;
+const refreshMode = (state = false, action) => {
+  if (action.type) {
+    switch (action.type) {
+      case ACTION_ENUM.TOGGLE_AUTOREFRESH:
+        return !state;
+      default:
+        return state;
+    }
+  }
+};
+
+export default combineReducers({
+  stocks,
+  refreshMode
+});

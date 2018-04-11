@@ -34,7 +34,8 @@ public class VantageClient {
                 .uri(quoteUri, ticker, this.properties.getApiKey())
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
-                .flatMap(clientResponse -> clientResponse.bodyToMono(VantageOutput.class));
+                .flatMap(clientResponse -> clientResponse.bodyToMono(VantageOutput.class))
+                .log(this.getClass().getName());
 
     }
 
@@ -44,7 +45,8 @@ public class VantageClient {
                 .uri(quotesUri, String.join( ",", ticker), this.properties.getApiKey())
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
-                .flatMap(clientResponse -> clientResponse.bodyToMono(VantageOutput.class));
+                .flatMap(clientResponse -> clientResponse.bodyToMono(VantageOutput.class))
+                .log(this.getClass().getName());
 
     }
 

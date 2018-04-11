@@ -6,7 +6,7 @@ import ActionEnum from "../reducers/action";
 import stockFetchUtil from "../utils/stockFetch";
 import { TopToaster, BottomToaster } from "./toasterApp";
 
-import { Card, Icon, Intent, Position } from "@blueprintjs/core";
+import { Card, Icon, Intent } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 
 class StockCard extends React.Component {
@@ -29,25 +29,8 @@ class StockCard extends React.Component {
     loading: true
   };
 
-  constructor(props) {
-    super(props);
-    // Transferring props to state
-    this.state = {
-      loading: true,
-      ...this.props
-    };
-  }
-
   componentDidMount() {
     this.updateData();
-  }
-
-  componentWillReceiveProps(props) {
-    // receive update of props and must be passed to state
-    this.setState({
-      ...props,
-      loading: false
-    });
   }
 
   /**
@@ -55,8 +38,9 @@ class StockCard extends React.Component {
    */
   async updateData() {
     // get individual stock
-    const data = await stockFetchUtil.fetchStock(this.props.symbol);
-    if (data) {
+    let data = await stockFetchUtil.fetchStock(this.props.symbol);
+    if (data && data.length === 1) {
+      data = data[0];
       // update stock info in context
       this.props.dispatch({
         type: ActionEnum.UPDATE_STOCK,
@@ -70,7 +54,6 @@ class StockCard extends React.Component {
       });
       // update drawing
       this.setState({
-        ...data,
         loading: false
       });
     } else {
@@ -88,12 +71,21 @@ class StockCard extends React.Component {
   }
 
   render() {
-    const { loading, symbol, price, volume, timestamp } = this.state;
+    const { symbol, price, volume, timestamp } = this.props;
+    const { loading } = this.state;
 
     return (
       <Consumer>
         {({ store, dispatch }) => (
-          <Card elevation={0} interactive={true} className="card-item">
+          <Card
+            elevation={0}
+            interactive={true}
+            className={
+              store.getState().refreshMode
+                ? "pt-dark refreshOn card-item"
+                : "pt-dark card-item"
+            }
+          >
             <Icon
               icon={IconNames.CROSS}
               intent={Intent.DANGER}

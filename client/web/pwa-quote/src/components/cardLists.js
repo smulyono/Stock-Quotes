@@ -7,21 +7,18 @@ class CardLists extends React.Component {
   render() {
     return (
       <Consumer>
-        {({ store, dispatch }) => (
+        {({ stocks, store, dispatch }) => (
           <div className="pt-dark cardlists-container">
-            {store
-              .getState()
-              .map(i => (
-                <Card
-                  key={i.symbol}
-                  symbol={i.symbol}
-                  price={i.price}
-                  volume={i.volume}
-                  timestamp={i.timestamp}
-                  needUpdate={i.manualUpdate}
-                  dispatch={dispatch}
-                />
-              ))}
+            {stocks.map(i => (
+              <Card
+                key={i.symbol}
+                symbol={i.symbol}
+                price={i.price}
+                volume={i.volume}
+                timestamp={i.timestamp}
+                dispatch={dispatch}
+              />
+            ))}
           </div>
         )}
       </Consumer>

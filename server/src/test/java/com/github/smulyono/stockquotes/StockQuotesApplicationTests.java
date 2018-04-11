@@ -11,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -26,26 +25,20 @@ public class StockQuotesApplicationTests {
 
 	@Test
 	public void fetchRoutes() {
-		List<Quote> results = webTestClient
+		webTestClient
 				.get()
-				.uri("/quotes?")
+				.uri("/quotes?duration=2")
 				.exchange()
 				.expectStatus().isOk()
-				.expectHeader().contentType(MediaType.APPLICATION_STREAM_JSON)
-				.returnResult(Quote.class)
-				.getResponseBody()
-				.take(1)
-				.collectList()
-				.block();
-		Assert.assertNotNull(results);
-		Assert.assertTrue(results.size() == 0);
+				.expectHeader().contentType(MediaType.TEXT_EVENT_STREAM)
+				.expectBody().isEmpty();
 
-        results = webTestClient
+		List<Quote> results = webTestClient
                 .get()
-                .uri("/quotes?stocks=GOOGL,APPL,MSFT")
+                .uri("/quotes?symbols=GOOGL,APPL,MSFT&duration=1")
                 .exchange()
                 .expectStatus().isOk()
-                .expectHeader().contentType(MediaType.APPLICATION_STREAM_JSON)
+                .expectHeader().contentType(MediaType.TEXT_EVENT_STREAM)
                 .returnResult(Quote.class)
                 .getResponseBody()
                 .take(30)
@@ -60,7 +53,7 @@ public class StockQuotesApplicationTests {
 	public void fetchInstantRoutes() {
 		List<Quote> results = webTestClient
 				.get()
-				.uri("/instantquotes?stocks=AAPL,MSFT,JNPR")
+				.uri("/instantquotes?symbols=AAPL,MSFT,JNPR")
 				.exchange()
 				.expectStatus().isOk()
 				.expectHeader().contentType(MediaType.APPLICATION_JSON)
