@@ -14,7 +14,8 @@
         "react": "^16.3.0",
         "react-dom": "^16.3.0",
         "react-transition-group": "^2.2.1",
-        "redux": "^3.7.2"
+        "redux": "^3.7.2",
+        "webpack-boot": "^0.0.17"
     },
     "devDependencies": {
         "babel-preset-env": "^1.6.1",
