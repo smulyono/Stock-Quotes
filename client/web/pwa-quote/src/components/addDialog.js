@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Consumer } from "../context/stockContext";
-import ActionEnum from "../reducers/action";
+import Action from "../reducers/action";
 import { Button, Dialog, Label, AnchorButton, Intent } from "@blueprintjs/core";
 
 import { IconNames } from "@blueprintjs/icons";
@@ -55,10 +55,7 @@ class AddDialog extends React.Component {
                 text="Add Symbol"
                 icon={IconNames.ADD}
                 onClick={() => {
-                  dispatch({
-                    type: ActionEnum.ADD_STOCK,
-                    name: this.inputSymbol.current.value
-                  });
+                  dispatch(Action.ADD_STOCK(this.inputSymbol.current.value));
                   onCloseDialogHandler();
                 }}
               />

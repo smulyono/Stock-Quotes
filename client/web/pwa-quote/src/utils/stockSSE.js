@@ -1,4 +1,4 @@
-import ActionEnum from "../reducers/action";
+import Action from "../reducers/action";
 
 class stockSSE {
   sseHandler = undefined;
@@ -56,11 +56,7 @@ class stockSSE {
   onmessageHandler = e => {
     var json = JSON.parse(e.data);
     if (e.data && json && json.symbol) {
-      this.dispatch({
-        type: ActionEnum.UPDATE_STOCK,
-        symbol: json.symbol,
-        ...json
-      });
+      this.dispatch(Action.UPDATE_STOCK(json.symbol, json));
     }
   };
 
