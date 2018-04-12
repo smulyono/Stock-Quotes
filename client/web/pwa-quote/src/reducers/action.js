@@ -1,3 +1,5 @@
+import StockFetchUtil from "../utils/stockFetch";
+
 const ADD_STOCK_TEXT = "add_stock",
   DELETE_STOCK_TEXT = "delete_stock",
   REFRESH_STOCK_TEXT = "refresh_stock",
@@ -24,10 +26,13 @@ export default {
       symbol: symbol
     };
   },
-  REFRESH_STOCK: newdata => {
-    return {
-      type: REFRESH_STOCK_TEXT,
-      newdata
+  REFRESH_STOCK: () => {
+    return async (dispatch, getState) => {
+      const newdata = await StockFetchUtil.fetchAllStocks(getState().stocks);
+      dispatch({
+        type: REFRESH_STOCK_TEXT,
+        newdata
+      });
     };
   },
   UPDATE_STOCK: (symbol, data) => {

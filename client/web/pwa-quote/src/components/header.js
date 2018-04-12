@@ -33,10 +33,8 @@ class Header extends React.Component {
     dispatch(Action.TOGGLE_AUTOREFRESH());
   };
 
-  refreshAllData = async (store, dispatch) => {
-    const currentState = store.getState();
-    const newdata = await StockFetchUtil.fetchAllStocks(currentState.stocks);
-    dispatch(Action.REFRESH_STOCK(newdata));
+  refreshAllData = dispatch => {
+    dispatch(Action.REFRESH_STOCK());
   };
 
   render() {
@@ -69,7 +67,7 @@ class Header extends React.Component {
                 <Button
                   icon={IconNames.REFRESH}
                   onClick={e => {
-                    this.refreshAllData(store, dispatch);
+                    this.refreshAllData(dispatch);
                   }}
                 />
                 <Button
