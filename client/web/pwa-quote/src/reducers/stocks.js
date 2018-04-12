@@ -4,7 +4,7 @@ import { combineReducers } from "redux";
 const stocks = (state = [], action) => {
   if (action.type) {
     switch (action.type) {
-      case ACTION_ENUM.ADD_STOCK:
+      case ACTION_ENUM.ADD_STOCK_TEXT:
         return [
           ...state,
           {
@@ -14,9 +14,9 @@ const stocks = (state = [], action) => {
             timestamp: "-"
           }
         ];
-      case ACTION_ENUM.DELETE_STOCK:
+      case ACTION_ENUM.DELETE_STOCK_TEXT:
         return state.filter(i => i.symbol !== action.symbol);
-      case ACTION_ENUM.REFRESH_STOCK:
+      case ACTION_ENUM.REFRESH_STOCK_TEXT:
         // will receive the updated stock information from endpoint with
         // action.newdata
         if (action.newdata) {
@@ -27,7 +27,7 @@ const stocks = (state = [], action) => {
         } else {
           return state;
         }
-      case ACTION_ENUM.UPDATE_STOCK:
+      case ACTION_ENUM.UPDATE_STOCK_TEXT:
         return state.map(i => {
           if (i.symbol === action.symbol) {
             i.price = action.price;
@@ -48,7 +48,7 @@ const stocks = (state = [], action) => {
 const refreshMode = (state = false, action) => {
   if (action.type) {
     switch (action.type) {
-      case ACTION_ENUM.TOGGLE_AUTOREFRESH:
+      case ACTION_ENUM.TOGGLE_AUTOREFRESH_TEXT:
         return !state;
       default:
         return state;

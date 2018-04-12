@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Consumer } from "../context/stockContext";
-import ActionEnum from "../reducers/action";
+import Action from "../reducers/action";
 import StockFetchUtil from "../utils/stockFetch";
 
 import AddDialog from "./addDialog";
@@ -30,18 +30,11 @@ class Header extends React.Component {
   }
 
   toggleAutoRefresh = (value, store, dispatch) => {
-    dispatch({
-      type: ActionEnum.TOGGLE_AUTOREFRESH
-    });
+    dispatch(Action.TOGGLE_AUTOREFRESH());
   };
 
-  refreshAllData = async (store, dispatch) => {
-    const currentState = store.getState();
-    const newdata = await StockFetchUtil.fetchAllStocks(currentState.stocks);
-    dispatch({
-      type: ActionEnum.REFRESH_STOCK,
-      newdata
-    });
+  refreshAllData = dispatch => {
+    dispatch(Action.REFRESH_STOCK());
   };
 
   render() {
@@ -74,7 +67,7 @@ class Header extends React.Component {
                 <Button
                   icon={IconNames.REFRESH}
                   onClick={e => {
-                    this.refreshAllData(store, dispatch);
+                    this.refreshAllData(dispatch);
                   }}
                 />
                 <Button

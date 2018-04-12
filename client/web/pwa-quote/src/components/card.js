@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { Consumer } from "../context/stockContext";
-import ActionEnum from "../reducers/action";
+import Action from "../reducers/action";
 import stockFetchUtil from "../utils/stockFetch";
 import { TopToaster, BottomToaster } from "./toasterApp";
 
@@ -42,11 +42,7 @@ class StockCard extends React.Component {
     if (data && data.length === 1) {
       data = data[0];
       // update stock info in context
-      this.props.dispatch({
-        type: ActionEnum.UPDATE_STOCK,
-        symbol: this.props.symbol,
-        ...data
-      });
+      this.props.dispatch(Action.UPDATE_STOCK(this.props.symbol, data));
       BottomToaster.show({
         className: "pt-intent-success",
         message: `${this.props.symbol} added !`,
@@ -63,10 +59,7 @@ class StockCard extends React.Component {
         icon: IconNames.ERROR
       });
       // delete symbol which cannot be found
-      this.props.dispatch({
-        type: ActionEnum.DELETE_STOCK,
-        symbol: this.props.symbol
-      });
+      this.props.dispatch(Action.DELETE_STOCK(this.props.symbol));
     }
   }
 
@@ -89,12 +82,7 @@ class StockCard extends React.Component {
             <Icon
               icon={IconNames.CROSS}
               intent={Intent.DANGER}
-              onClick={() =>
-                dispatch({
-                  type: ActionEnum.DELETE_STOCK,
-                  symbol: this.props.symbol
-                })
-              }
+              onClick={() => dispatch(Action.DELETE_STOCK(this.props.symbol))}
             />
             <div className={`ticker-symbol`}>
               <span

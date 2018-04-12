@@ -2,11 +2,14 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import stockReducers from "../reducers/stocks";
-import { createStore } from "redux";
+import { createStore, applyMiddleware } from "redux";
 import StockSSE from "../utils/stockSSE";
 
+import thunk from "redux-thunk";
+import { logger } from "../middleware/logger";
+
 const AppContext = React.createContext();
-const AppStore = createStore(stockReducers);
+const AppStore = createStore(stockReducers, applyMiddleware(thunk, logger));
 
 export const Consumer = AppContext.Consumer;
 

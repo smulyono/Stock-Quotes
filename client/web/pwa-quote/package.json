@@ -15,6 +15,7 @@
         "react-dom": "^16.3.0",
         "react-transition-group": "^2.2.1",
         "redux": "^3.7.2",
+        "redux-thunk": "^2.2.0",
         "webpack-boot": "^0.0.17"
     },
     "devDependencies": {
