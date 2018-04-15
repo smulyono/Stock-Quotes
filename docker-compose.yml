@@ -12,4 +12,13 @@ services:
       - "8081:8081"
     environment: 
       - STOCK_APIKEY=AC64YZ5RVTHDXP05
+
+  web : 
+    image : smulyono/quoteweb:latest
+    build: 
+      context : ./client/web
+      dockerfile: Dockerfile
+    container_name: quoteweb
+    ports : 
+      - "8000:3000"
     
