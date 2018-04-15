@@ -2,9 +2,11 @@ import React from "react";
 
 import { Consumer } from "../context/stockContext";
 import Action from "../reducers/action";
-import StockFetchUtil from "../utils/stockFetch";
 
 import AddDialog from "./addDialog";
+import UrlDialog from "../components/urlDialog";
+import { isUrlregistered, setUrl, getUrl } from "../utils/urlUtil";
+
 import {
   Navbar,
   NavbarGroup,
@@ -20,8 +22,36 @@ import { IconNames } from "@blueprintjs/icons";
 
 class Header extends React.Component {
   state = {
-    dialogOpen: false
+    dialogOpen: false,
+    urlDialogOpen: true
   };
+
+  constructor(props) {
+    super(props);
+
+    this.state.urlDialogOpen = !isUrlregistered();
+
+    if (this.state.urlDialogOpen) {
+      console.log("no URL");
+    } else {
+      console.log("Url setup for ", getUrl());
+    }
+  }
+
+  updateUrl = newUrl => {
+    if (newUrl) {
+      setUrl(newUrl);
+    }
+    this.setState({
+      urlDialogOpen: !isUrlregistered()
+    });
+  };
+
+  openUrlDialog() {
+    this.setState({
+      urlDialogOpen: true
+    });
+  }
 
   toggleDialog() {
     this.setState({
@@ -46,6 +76,14 @@ class Header extends React.Component {
               store.getState().refreshMode ? "pt-dark refreshOn" : "pt-dark"
             }
           >
+            <NavbarGroup align={Alignment.LEFT}>
+              <ButtonGroup minimal={true}>
+                <Button
+                  icon={IconNames.COG}
+                  onClick={() => this.openUrlDialog()}
+                />
+              </ButtonGroup>
+            </NavbarGroup>
             <NavbarGroup align={Alignment.RIGHT}>
               <NavbarHeading title="Stock Quote">Stock Quote</NavbarHeading>
               <NavbarDivider />
@@ -79,6 +117,10 @@ class Header extends React.Component {
             <AddDialog
               dialogOpen={this.state.dialogOpen}
               onCloseDialogHandler={() => this.toggleDialog()}
+            />
+            <UrlDialog
+              dialogOpen={this.state.urlDialogOpen}
+              onCloseDialogHandler={newVal => this.updateUrl(newVal)}
             />
           </Navbar>
         )}
