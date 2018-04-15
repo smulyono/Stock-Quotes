@@ -1,4 +1,5 @@
 import Action from "../reducers/action";
+import { getUrlConstant } from "./urlUtil";
 
 class stockSSE {
   sseHandler = undefined;
@@ -35,7 +36,8 @@ class stockSSE {
 
   updateSSE() {
     const symbolsInComma = this.state.stocks.map(i => i.symbol);
-    const baseUrl = `http://localhost:8081/quotes?duration=20&symbols=${symbolsInComma}`;
+    const url = getUrlConstant();
+    const baseUrl = `${url}/quotes?duration=20&symbols=${symbolsInComma}`;
     if (this.state.refreshMode) {
       this.closeHandler();
       this.sseHandler = new EventSource(baseUrl);

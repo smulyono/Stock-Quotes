@@ -1,8 +1,10 @@
 import "whatwg-fetch";
+import { getUrlConstant } from "./urlUtil";
 
 const fetchStock = async symbol => {
   console.log("getting instant quote for ", symbol);
-  const uri = `http://localhost:8081/instantquotes?symbols=${symbol}`;
+  const url = getUrlConstant();
+  const uri = `${url}/instantquotes?symbols=${symbol}`;
   try {
     const response = await fetch(uri, {});
     const data = await response.json();
@@ -13,7 +15,6 @@ const fetchStock = async symbol => {
 };
 
 const fetchAllStocks = async state => {
-  //   const uri = `http://localhost:8081/quotes?symbols=${symbols}`;
   const allSymbol = state.map(i => i.symbol).join(",");
   return fetchStock(allSymbol);
 };

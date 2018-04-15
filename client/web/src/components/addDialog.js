@@ -1,10 +1,9 @@
-import React from "react";
+import { AnchorButton, Button, Dialog, Intent, Label } from "@blueprintjs/core";
+import { IconNames } from "@blueprintjs/icons";
 import PropTypes from "prop-types";
+import React from "react";
 import { Consumer } from "../context/stockContext";
 import Action from "../reducers/action";
-import { Button, Dialog, Label, AnchorButton, Intent } from "@blueprintjs/core";
-
-import { IconNames } from "@blueprintjs/icons";
 
 // --- Add Dialog ----
 class AddDialog extends React.Component {
