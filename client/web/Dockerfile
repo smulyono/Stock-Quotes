@@ -9,4 +9,4 @@ RUN echo "Installing serve package " && \
 
 EXPOSE 3000
 
-ENTRYPOINT [ "serve", "-s", "/opt/target", "-p", "3000" ]
+CMD serve -s /opt/target -p ${PORT:3000}

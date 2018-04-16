@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: ${PORT:8081}
 spring:
   output:
     ansi:
@@ -7,3 +7,8 @@ spring:
   profiles:
     include:
       - secret
+
+vantage:
+  # Expecting api key to be supplied through environment variables
+  # make this property changes in `application-secret` during dev/prod
+  api-key: ${STOCK_APIKEY:-}

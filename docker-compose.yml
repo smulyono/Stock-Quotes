@@ -11,14 +11,16 @@ services:
     ports: 
       - "8081:8081"
     environment: 
-      - STOCK_APIKEY=AC64YZ5RVTHDXP05
+      - STOCK_APIKEY=<ADD API KEY HERE>
 
-  web : 
+  client_web : 
     image : smulyono/quoteweb:latest
     build: 
       context : ./client/web
       dockerfile: Dockerfile
     container_name: quoteweb
+    environment: 
+      - PORT=3000
     ports : 
       - "8000:3000"
     

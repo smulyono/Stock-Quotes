@@ -36,3 +36,11 @@ dependencies {
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('io.projectreactor:reactor-test')
 }
+
+sourceSets {
+    main {
+        resources {
+            exclude "application-secret.yaml"
+        }
+    }
+}

@@ -1,5 +1,6 @@
 ## PROJECTS ###
 src/main/resources/application-secret.yaml
+src/test/resources/application-secret.yaml
 
 .gradle
 /build/
